@@ -15,7 +15,7 @@ class MyCircularQueue {
      */
     public MyCircularQueue(int k) {
         this.array = new int[k];
-        this.front = 0;//如何定义队头和队尾 0 还是-1 先移动指针还是先操作元素  这里采用先移动指针
+        this.front = -1;//如何定义队头和队尾 0 还是-1 先移动指针还是先操作元素  这里采用先移动指针
         this.rear = -1;
         this.len = k;
         this.count = 0;
@@ -27,6 +27,9 @@ class MyCircularQueue {
     public boolean enQueue(int value) {
         if (isFull()) {
             return false;
+        }
+        if (isEmpty()) {
+            this.front = 0;
         }
         this.rear = (this.rear + 1) % this.len;
         this.array[rear] = value;
@@ -40,6 +43,12 @@ class MyCircularQueue {
     public boolean deQueue() {
         if (isEmpty()) {
             return false;
+        }
+        if (this.front == this.rear) {
+            this.front = -1;
+            this.rear = -1;
+            this.count--;
+            return true;//清空队列 还原初始状态
         }
         this.front = (this.front + 1) % this.len;
         this.count--;
